@@ -20,6 +20,7 @@ class CreateAdvertisementsTable extends Migration
             $table->string('title');
             $table->text('body');
             $table->string('location');
+            $table->integer('type'); // | 1 - private | 2 - company
             $table->integer('status')->default(1);
             $table->timestamps();
         });

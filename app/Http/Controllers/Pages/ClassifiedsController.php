@@ -8,58 +8,79 @@ use App\Http\Resources\Pages\ClassifiedsResource;
 use App\Mail\Pages\Classifieds\AddMail;
 use App\Model\Page\Advertisement;
 use App\Http\Controllers\Controller;
+use App\Model\Price\Price;
+use App\Support\Pages\Classifieds\AdvertisementPrivate;
+use App\Support\Pages\Classifieds\AdvertisementPublic;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
 class ClassifiedsController extends Controller
 {
+    protected $adPOST;
+    protected $adGET;
+
+    public function __construct()
+    {
+        $this->adPOST = new AdvertisementPrivate();
+        $this->adGET = new AdvertisementPublic();
+    }
+
     public function index()
     {
-        $classifieds = Advertisement::with(['category'])
-            ->where('status', 1)
-            ->orderBy('id', 'DESC')
-            ->paginate(20);
+        $classifieds = $this->adGET->index();
+        return ClassifiedsResource::collection($classifieds);
+    }
+
+    public function indexPro(){
+        $classifieds = $this->adGET->indexPro();
         return ClassifiedsResource::collection($classifieds);
     }
 
     public function store(CreateRequest $r)
     {
-        $a = Advertisement::create([
-            'user_id' => Auth::id(),
-            'category_id' => $r->category_id,
-            'title' => $r->title,
-            'body' => $r->body,
-            'location' => $r->location
-        ]);
-        $data = $a;
-        $m = new AddMail($data);
-        Mail::to(Auth::user()->email)->send($m);
-        return new  ClassifiedsResource($a);
-    }
-
-    public function view(Advertisement $a)
-    {
-        $advertisement = Advertisement::with(['user', 'category'])
-            ->find($a);
-        return new ClassifiedsResource($advertisement);
-    }
-
-    public function update(EditRequest $r, Advertisement $a)
-    {
-        $a->update($r->only([
-            'title' => $r->title,
-            'body' => $r->body,
-            'location' => $r->location
-        ]));
+        $a = $this->adPOST->store($r);
         return new ClassifiedsResource($a);
     }
 
-    public function destroy(Advertisement $a)
+    public function view($id)
     {
-        $a->delete();
+        $advertisement = $this->adGET->show($id);
+        return new ClassifiedsResource($advertisement);
+    }
+
+    public function update(EditRequest $r, Advertisement $advertisement)
+    {
+        $advertisement = $this->adPOST->update($r, $advertisement);
+        return new ClassifiedsResource($advertisement);
+    }
+
+    public function destroy(Advertisement $advertisement)
+    {
+        $this->adPOST->destroy($advertisement);
+    }
+
+    public function classifiedsInCity($city)
+    {
+        $classifieds = $this->adGET->indexCity($city);
+        return ClassifiedsResource::collection($classifieds);
+    }
+
+    public function moveToArchive($id){
+        Advertisement::where('id', $id)
+            ->update(['status' => 2]);
         return response()->json([
             'error' => false,
-            'msg' => 'Advertisement deleted!'
+            'msg' => 'Updated advertisement'
+        ], 200);
+    }
+
+    public function removeFromArchive($id){
+        Advertisement::where('id', $id)
+            ->update(['status' => 1]);
+        return response()->json([
+            'error' => false,
+            'msg' => 'Updated advertisement'
         ], 200);
     }
 }

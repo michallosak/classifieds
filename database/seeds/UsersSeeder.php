@@ -26,17 +26,34 @@ class UsersSeeder extends Seeder
             }
             $user = \App\User::create([
                 'email' => $email . '.losak' . +$i . '@op.pl',
-                'password' => bcrypt('HarmonRabb14')
+                'password' => bcrypt('HarmonRabb14'),
+                'activated' => 1
             ]);
             \App\Model\User\Avatar::create([
                 'user_id' => $user->id,
                 'src' => $avatar
             ]);
-            \App\Model\User\Specific::create([
+            $s = \App\Model\User\Specific::create([
                 'user_id' => $user->id,
                 'name' => $name,
                 'birthday' => '2000-08-20',
-                'sex' => $sex
+                'sex' => $sex,
+                'type_account' => rand(1, 2)
+            ]);
+            if ($s->type_account === 2){
+                \App\Model\User\Company::create([
+                    'user_id' => $user->id,
+                    'name' => 'Name company',
+                    'nip' => '0020020020'.$i,
+                    'country' => 'USA',
+                    'address' => 'Stanford s',
+                    'city' => 'Dallas',
+                    'post_code' => '26-021'
+                ]);
+            }
+            \App\Model\User\Contact::create([
+                'user_id' => $user->id,
+                'email' => $user->email
             ]);
         }
     }

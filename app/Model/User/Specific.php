@@ -10,7 +10,8 @@ class Specific extends Model
     protected $fillable = [
         'user_id',
         'name', 'birthday',
-        'sex'
+        'sex',
+        'type_account'
     ];
     public function user(){
         return $this->belongsTo(User::class);

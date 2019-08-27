@@ -21,6 +21,7 @@ class CreateSpecificsTable extends Migration
             $table->string('last_name')->nullable();
             $table->dateTime('birthday');
             $table->integer('sex');
+            $table->integer('type_account');
             $table->timestamps();
         });
     }

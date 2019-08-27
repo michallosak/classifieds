@@ -15,7 +15,8 @@ class CategoriesSeeder extends Seeder
             \App\Model\Category\Category::create([
                 'user_id' => rand(1, 10),
                 'name' => 'Name Category ' . $i,
-                'parent_id' => rand(1, 10)
+                'parent_id' => rand(1, 10),
+                'status' => 1
             ]);
         }
     }

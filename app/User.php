@@ -3,8 +3,14 @@
 namespace App;
 
 use App\Http\Requests\User\Auth\RegisterRequest;
+use App\Model\Follow\Follow;
+use App\Model\Message\Message;
 use App\Model\Page\Advertisement;
+use App\Model\Photo\Photo;
+use App\Model\Rating\Rating;
 use App\Model\User\Avatar;
+use App\Model\User\Company;
+use App\Model\User\Contact;
 use App\Model\User\Specific;
 use App\Model\User\VerifyEmail;
 use Illuminate\Notifications\Notifiable;
@@ -39,7 +45,8 @@ class User extends Authenticatable
     }
 
     public function classifieds(){
-        return $this->hasMany(Advertisement::class);
+        return $this->hasMany(Advertisement::class)
+            ->with(['price', 'photos']);
     }
 
     public function fullname(){
@@ -48,4 +55,25 @@ class User extends Authenticatable
         $fullName = $name . ' ' . $lastName;
         return $fullName;
     }
+
+    public function follows(){
+        return $this->hasMany(Follow::class);
+    }
+
+    public function photos(){
+        return $this->hasMany(Photo::class);
+    }
+
+    public function contact(){
+        return $this->hasOne(Contact::class);
+    }
+
+    public function company(){
+        return $this->hasOne(Company::class, 'user_id', 'id');
+    }
+
+    public function messages(){
+        return $this->hasMany(Message::class);
+    }
+
 }
