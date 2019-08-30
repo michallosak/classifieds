@@ -12,6 +12,8 @@ Route::get('classifieds-city/{city}', 'Pages\ClassifiedsController@classifiedsIn
 
 Route::get('profile/{id}', 'Profile\UserController@user');
 
+Route::post('contact-us', 'Supports\ContactController@send');
+
 // reviews
 Route::prefix('reviews')->group(function (){
     Route::get('user/{id}', 'Profile\UserController@reviewsUser');
