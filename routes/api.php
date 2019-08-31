@@ -9,6 +9,7 @@ Route::get('classifieds-pro', 'Pages\ClassifiedsController@indexPro');
 Route::get('categories', 'Categories\CategoryController@index');
 Route::get('advertisement/{id}', 'Pages\ClassifiedsController@view');
 Route::get('classifieds-city/{city}', 'Pages\ClassifiedsController@classifiedsInCity');
+Route::get('search', 'Search\SearchController@search');
 
 Route::get('profile/{id}', 'Profile\UserController@user');
 
@@ -52,11 +53,6 @@ Route::group(['prefix' => 'auth'], function () {
                     Route::post('move-ad', 'Archives\ClassifiedsController@moveArchive');
                 });
                 Route::apiResource('advertisement', 'Pages\ClassifiedsController');
-                //Route::get('classifieds', 'User\ClassifiedsController@index');
-                //Route::post('create-ad', 'Pages\ClassifiedsController@store');
-                //Route::delete('delete-ad/{advertisement}', 'Pages\ClassifiedsController@destroy');
-                //Route::post('move-ad/{id}', 'Pages\ClassifiedsController@moveToArchive');
-                //Route::get('classifieds-archive', 'User\ClassifiedsController@classifiedsArchive');
                 Route::patch('remove-archive/{id}', 'Pages\ClassifiedsController@removeFromArchive');
 
                 Route::prefix('settings')->group(function () {
