@@ -7,7 +7,6 @@ use App\Model\Follow\Follow;
 use App\Model\Message\Message;
 use App\Model\Page\Advertisement;
 use App\Model\Photo\Photo;
-use App\Model\Rating\Rating;
 use App\Model\User\Avatar;
 use App\Model\User\Company;
 use App\Model\User\Contact;
@@ -16,8 +15,6 @@ use App\Model\User\VerifyEmail;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable

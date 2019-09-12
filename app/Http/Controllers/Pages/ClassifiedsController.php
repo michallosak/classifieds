@@ -5,15 +5,10 @@ namespace App\Http\Controllers\Pages;
 use App\Http\Requests\Pages\Classifieds\CreateRequest;
 use App\Http\Requests\Pages\Classifieds\EditRequest;
 use App\Http\Resources\Pages\ClassifiedsResource;
-use App\Mail\Pages\Classifieds\AddMail;
 use App\Model\Page\Advertisement;
 use App\Http\Controllers\Controller;
-use App\Model\Price\Price;
 use App\Support\Pages\Classifieds\AdvertisementPrivate;
 use App\Support\Pages\Classifieds\AdvertisementPublic;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 
 class ClassifiedsController extends Controller
 {

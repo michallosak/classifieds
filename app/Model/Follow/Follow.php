@@ -5,6 +5,7 @@ namespace App\Model\Follow;
 use App\Model\Page\Advertisement;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Follow extends Model
 {
@@ -29,6 +30,12 @@ class Follow extends Model
     public function users(){
         return $this->belongsTo(User::class, 'follow_id', 'id')
             ->with('avatar', 's');
+    }
+
+    public function followed(){
+        return (bool) Follow::where('user_id', Auth::id())
+            ->where('follow_id', $this->id)
+            ->first();
     }
 
 }
